@@ -6,13 +6,13 @@ namespace Fastrup.Bowling.Domain.Model.Game
 {
     public sealed record TenPinRoll : PinRoll
     {
-        private TenPinRoll() { }
+        private TenPinRoll(int pinsKnockedOver) : base(pinsKnockedOver) { }
 
         public override int PinsInLane => 10;
 
         public static TenPinRoll Create(int pinsKnockedOver, IEventRegister eventRegister)
         {
-            var roll = new TenPinRoll { PinsKnockedOver = pinsKnockedOver };
+            var roll = new TenPinRoll(pinsKnockedOver);
             eventRegister.RegisterEvent(new RollCreatedEvent(roll));
             return roll;
         }

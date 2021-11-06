@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Fastrup.Bowling.Domain.Abstractions;
+﻿using Fastrup.Bowling.Domain.Abstractions;
 using Fastrup.Bowling.Domain.Events;
 using Fastrup.Bowling.Domain.Exceptions;
+using System.Linq;
 
 namespace Fastrup.Bowling.Domain.Model.Game
 {
@@ -10,7 +10,7 @@ namespace Fastrup.Bowling.Domain.Model.Game
         private readonly bool _isLastFrame;
         private int _numberOfBonusRolls;
 
-        private TenPinFrame(bool isLastFrame) => _isLastFrame = isLastFrame;
+        private TenPinFrame(Id gameId, Id playerId, bool isLastFrame) : base(gameId, playerId) => _isLastFrame = isLastFrame;
 
         public override bool IsComplete { get; protected set; }
 
@@ -26,16 +26,16 @@ namespace Fastrup.Bowling.Domain.Model.Game
             if (IsComplete) throw new FrameException("The frame is completed");
             if (Rolls.Count > 0 && Rolls.Count < NumberOfRolls && !IsStrike && Rolls.First().PinsKnockedOver + roll.PinsKnockedOver > roll.PinsInLane) throw new FrameException("Invalid number of pins knocked over");
 
-            Rolls.Add(roll);
+            _rolls.Add(roll);
 
             if (_isLastFrame && (IsStrike || IsSpare)) _numberOfBonusRolls = 1;
             IsComplete = NotLastFrameAndIsStrike || NoMoreRollsAvailable;
             if (IsComplete) eventRegister.RegisterEvent(new FrameCompletedEvent(this));
         }
 
-        public static TenPinFrame Create(bool isLastFrame, IEventRegister eventRegister)
+        public static TenPinFrame Create(Id gameId, Id playerId, bool isLastFrame, IEventRegister eventRegister)
         {
-            var tenPinFrame = new TenPinFrame(isLastFrame);
+            var tenPinFrame = new TenPinFrame(gameId, playerId, isLastFrame);
             eventRegister.RegisterEvent(new FrameCreatedEvent(tenPinFrame));
             return tenPinFrame;
         }

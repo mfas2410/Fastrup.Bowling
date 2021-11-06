@@ -4,6 +4,8 @@
     {
         private readonly int _pinsKnockedOver;
 
+        public PinRoll(int pinsKnockedOver) => PinsKnockedOver = pinsKnockedOver;
+
         public int PinsKnockedOver
         {
             get => _pinsKnockedOver;

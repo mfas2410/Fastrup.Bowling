@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Fastrup.Bowling.Domain.Abstractions;
+﻿using Fastrup.Bowling.Domain.Abstractions;
 using Fastrup.Bowling.Domain.Events;
+using System.Linq;
 
 namespace Fastrup.Bowling.Domain.Model.Score
 {
@@ -10,9 +10,9 @@ namespace Fastrup.Bowling.Domain.Model.Score
         {
             get
             {
-                var score = 0;
+                int score = 0;
                 FrameCompletedEvent[] events = FrameEvents.ToArray();
-                for (var index = 0; index < events.Length; index++)
+                for (int index = 0; index < events.Length; index++)
                 {
                     FrameCompletedEvent frame = events[index];
                     if (frame.IsStrike || frame.IsSpare)

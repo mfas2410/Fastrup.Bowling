@@ -1,11 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using Fastrup.Bowling.Domain.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Fastrup.Bowling.Domain.Abstractions
 {
     public abstract class PinFrame
     {
-        public List<PinRoll> Rolls = new();
+        protected List<PinRoll> _rolls = new();
+
+        protected PinFrame(Id gameId, Id playerId)
+        {
+            GameId = gameId;
+            PlayerId = playerId;
+        }
+
+        public IReadOnlyCollection<PinRoll> Rolls => _rolls;
+
+        public Id GameId { get; }
+
+        public Id PlayerId { get; }
 
         public bool IsSpare => Rolls.Count >= NumberOfRolls && Rolls.Take(NumberOfRolls).Sum(x => x.PinsKnockedOver) == Rolls.FirstOrDefault()?.PinsInLane;
 

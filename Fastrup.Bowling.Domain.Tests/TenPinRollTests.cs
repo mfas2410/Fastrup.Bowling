@@ -1,11 +1,11 @@
-using System;
 using Fastrup.Bowling.Domain.Events;
 using Fastrup.Bowling.Domain.Exceptions;
 using Fastrup.Bowling.Domain.Model.Game;
 using FluentAssertions;
+using System;
 using Xunit;
 
-namespace Fastrup.Bowling.Tests
+namespace Fastrup.Bowling.Domain.Tests
 {
     public sealed class TenPinRollTests
     {

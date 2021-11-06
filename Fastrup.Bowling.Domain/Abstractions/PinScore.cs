@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Fastrup.Bowling.Domain.Events;
+﻿using Fastrup.Bowling.Domain.Events;
+using System.Collections.Generic;
 
 namespace Fastrup.Bowling.Domain.Abstractions
 {

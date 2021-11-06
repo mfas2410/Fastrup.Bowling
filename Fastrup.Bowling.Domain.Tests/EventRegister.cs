@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Fastrup.Bowling.Domain.Abstractions;
+using System.Collections.Generic;
 
-namespace Fastrup.Bowling.Tests
+namespace Fastrup.Bowling.Domain.Tests
 {
     public sealed class EventRegister : IEventRegister
     {

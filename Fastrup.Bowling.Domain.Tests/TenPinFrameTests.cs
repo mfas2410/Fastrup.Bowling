@@ -1,11 +1,12 @@
-﻿using System;
-using Fastrup.Bowling.Domain.Events;
+﻿using Fastrup.Bowling.Domain.Events;
 using Fastrup.Bowling.Domain.Exceptions;
+using Fastrup.Bowling.Domain.Model;
 using Fastrup.Bowling.Domain.Model.Game;
 using FluentAssertions;
+using System;
 using Xunit;
 
-namespace Fastrup.Bowling.Tests
+namespace Fastrup.Bowling.Domain.Tests
 {
     public sealed class TenPinFrameTests
     {
@@ -15,7 +16,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenAFrame_WhenKnockingAllPinsInFirstRoll_ThenItsAStrike()
         {
             // Arrange
-            var sut = TenPinFrame.Create(false, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), false, _eventRegister);
             var roll = TenPinRoll.Create(10, _eventRegister);
 
             // Act
@@ -32,7 +33,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenLastFrameAsStrike_WhenKnockingAllPinsInFirstRoll_ThenItsAStrikeWithTwoBonusRolls()
         {
             // Arrange
-            var sut = TenPinFrame.Create(true, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), true, _eventRegister);
             var roll1 = TenPinRoll.Create(10, _eventRegister);
             var roll2 = TenPinRoll.Create(10, _eventRegister);
             var roll3 = TenPinRoll.Create(10, _eventRegister);
@@ -53,7 +54,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenLastFrame_WhenKnockingAllPinsInFirstRoll_ThenItsAStrikeWithTwoBonusRolls()
         {
             // Arrange
-            var sut = TenPinFrame.Create(true, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), true, _eventRegister);
             var roll1 = TenPinRoll.Create(10, _eventRegister);
             var roll2 = TenPinRoll.Create(3, _eventRegister);
             var roll3 = TenPinRoll.Create(4, _eventRegister);
@@ -74,7 +75,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenLastFrameWithAllPinsKnockedOverInTwoRolls_WhenKnockingTooManyPinsInSecondRoll_ThrowException()
         {
             // Arrange
-            var sut = TenPinFrame.Create(true, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), true, _eventRegister);
             var roll1 = TenPinRoll.Create(7, _eventRegister);
             var roll2 = TenPinRoll.Create(7, _eventRegister);
 
@@ -90,7 +91,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenLastFrame_WhenKnockingAllPinsInBothRolls_ThenItsASpareWithOneBonusRoll()
         {
             // Arrange
-            var sut = TenPinFrame.Create(true, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), true, _eventRegister);
             var roll1 = TenPinRoll.Create(4, _eventRegister);
             var roll2 = TenPinRoll.Create(6, _eventRegister);
             var roll3 = TenPinRoll.Create(7, _eventRegister);
@@ -111,7 +112,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenACompletedFrame_WhenAddingRoll_ThenThrowException()
         {
             // Arrange
-            var sut = TenPinFrame.Create(false, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), false, _eventRegister);
             sut.AddRoll(TenPinRoll.Create(10, _eventRegister), _eventRegister);
             var roll = TenPinRoll.Create(0, _eventRegister);
 
@@ -126,7 +127,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenAFrame_WhenKnockingAllPinsInTwoRolls_ThenItsASpare()
         {
             // Arrange
-            var sut = TenPinFrame.Create(false, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), false, _eventRegister);
             var roll1 = TenPinRoll.Create(3, _eventRegister);
             var roll2 = TenPinRoll.Create(7, _eventRegister);
 
@@ -145,7 +146,7 @@ namespace Fastrup.Bowling.Tests
         public void GivenAFrame_WhenOnlyKnockingSomePinsInTwoRolls_ThenMarkFrameAsComplete()
         {
             // Arrange
-            var sut = TenPinFrame.Create(false, _eventRegister);
+            var sut = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), false, _eventRegister);
             var roll1 = TenPinRoll.Create(3, _eventRegister);
             var roll2 = TenPinRoll.Create(4, _eventRegister);
 

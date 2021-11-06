@@ -11,7 +11,6 @@ namespace Fastrup.Bowling.Domain.Events
         }
 
         public int PinsInLane { get; }
-
-        public int PinsKnockedOver { get; set; }
+        public int PinsKnockedOver { get; }
     }
 }
