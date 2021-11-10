@@ -24,5 +24,5 @@ public abstract class PinFrame
 
     public abstract int NumberOfRolls { get; }
 
-    public abstract void AddRoll(PinRoll roll, IEventRegister eventRegister);
+    public abstract void AddRoll(PinRoll roll);
 }

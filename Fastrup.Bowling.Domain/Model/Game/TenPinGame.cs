@@ -1,4 +1,6 @@
-﻿namespace Fastrup.Bowling.Domain.Model.Game;
+﻿using Fastrup.Bowling.Domain.Abstractions;
+
+namespace Fastrup.Bowling.Domain.Model.Game;
 
 public sealed class TenPinGame : PinGame
 {
@@ -19,16 +21,25 @@ public sealed class TenPinGame : PinGame
     public override void AddRoll(PinRoll pinRoll)
     {
         if (IsComplete) throw new GameException("The game has ended");
-        if (_frames.LastOrDefault() is null) _frames.Add(TenPinFrame.Create(Id, _playerIds[_currentPlayer], _frames.Count == _numberOfFrames - 1, _eventRegister));
+        if (_frames.LastOrDefault() is null) AddFrame();
         if (_frames.Last().IsComplete)
         {
             if (++_currentPlayer >= _playerIds.Length) _currentPlayer = 0;
-            _frames.Add(TenPinFrame.Create(Id, _playerIds[_currentPlayer], _frames.Count == _numberOfFrames - 1, _eventRegister));
+            AddFrame();
         }
 
-        _frames.Last().AddRoll(pinRoll, _eventRegister);
+        _frames.Last().AddRoll(pinRoll);
+        _eventRegister.RegisterEvent(new RollCreatedEvent(pinRoll));
+        if (_frames.Last().IsComplete) _eventRegister.RegisterEvent(new FrameCompletedEvent(_frames.Last()));
+
         IsComplete = _frames.Count == _numberOfFrames * _playerIds.Length && _frames.Last().IsComplete;
         if (IsComplete) _eventRegister.RegisterEvent(new GameCompletedEvent(this));
+
+        void AddFrame()
+        {
+            _frames.Add(new TenPinFrame(Id, _playerIds[_currentPlayer], _frames.Count == _numberOfFrames - 1));
+            _eventRegister.RegisterEvent(new FrameCreatedEvent(_frames.Last()));
+        }
     }
 
     public static TenPinGame Create(Id id, IEnumerable<Player.Player> players, IEventRegister eventRegister)

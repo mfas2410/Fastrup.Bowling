@@ -16,16 +16,16 @@ public sealed class TenPinRollTests
     [InlineData(8)]
     [InlineData(9)]
     [InlineData(10)]
-    public void GivenValidNumberOfPins_WhenInitializing_ThenReturnNumberOfPinsAndCreateEvent(int pinsKnockedOver)
+    public void GivenValidNumberOfPins_WhenInitializing_ThenReturnNumberOfPins(int pinsKnockedOver)
     {
         // Arrange
 
         // Act
-        TenPinRoll actual = TenPinRoll.Create(pinsKnockedOver, _eventRegister);
+        TenPinRoll actual = new(pinsKnockedOver);
 
         // Assert
         actual.PinsKnockedOver.Should().Be(pinsKnockedOver);
-        _eventRegister.DomainEvents.Should().HaveCount(1).And.AllBeOfType<RollCreatedEvent>();
+        _eventRegister.DomainEvents.Should().BeEmpty();
     }
 
     [Theory]
@@ -36,7 +36,7 @@ public sealed class TenPinRollTests
         // Arrange
 
         // Act
-        Action actual = () => TenPinRoll.Create(pinsKnockedOver, _eventRegister);
+        Action actual = () => new TenPinRoll(pinsKnockedOver);
 
         // Assert
         actual.Should().ThrowExactly<RollException>();

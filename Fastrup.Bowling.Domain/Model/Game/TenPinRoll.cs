@@ -2,16 +2,9 @@
 
 public sealed class TenPinRoll : PinRoll
 {
-    private TenPinRoll(int pinsKnockedOver) : base(pinsKnockedOver) { }
+    public TenPinRoll(int pinsKnockedOver) : base(pinsKnockedOver) { }
 
     public override int PinsInLane => 10;
-
-    public static TenPinRoll Create(int pinsKnockedOver, IEventRegister eventRegister)
-    {
-        TenPinRoll roll = new(pinsKnockedOver);
-        eventRegister.RegisterEvent(new RollCreatedEvent(roll));
-        return roll;
-    }
 
     protected override void ValidateRoll(int pinsKnockedOver)
     {

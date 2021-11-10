@@ -12,16 +12,7 @@ public sealed class TenPinGameTests
     }
 
     [Fact]
-    public void GivenGame_WhenCreating_ThenGameCreatedEventIsRegistered() =>
-        // Arrange
-
-        // Act
-
-        // Assert
-        _eventRegister.DomainEvents.Should().ContainSingle(x => x is GameCreatedEvent);
-
-    [Fact]
-    public void GivenGame_WhenCreating_ThenGameHasAnId()
+    public void GivenNewSinglePlayerGame_WhenCreating_ThenGameHasIdAndEventsAreRegistered()
     {
         // Arrange
         Id expected = _sut.Id;
@@ -31,6 +22,8 @@ public sealed class TenPinGameTests
 
         // Assert
         actual.Should().NotBeEmpty().And.Be(expected);
+        _eventRegister.DomainEvents.Should().ContainSingle(x => x is PlayerCreatedEvent);
+        _eventRegister.DomainEvents.Should().ContainSingle(x => x is GameCreatedEvent);
     }
 
     [Fact]
@@ -43,12 +36,15 @@ public sealed class TenPinGameTests
         // Act
         while (!_sut.IsComplete)
         {
-            _sut.AddRoll(TenPinRoll.Create(0, _eventRegister));
+            _sut.AddRoll(new TenPinRoll(0));
             numberOfRolls++;
         }
 
         // Assert
         _sut.IsComplete.Should().BeTrue();
+        _eventRegister.DomainEvents.Where(x => x is RollCreatedEvent).Should().HaveCount(expectedNumberOfRolls);
+        _eventRegister.DomainEvents.Where(x => x is FrameCreatedEvent).Should().HaveCount(expectedNumberOfRolls / 2);
+        _eventRegister.DomainEvents.Where(x => x is FrameCompletedEvent).Should().HaveCount(expectedNumberOfRolls / 2);
         _eventRegister.DomainEvents.Should().ContainSingle(x => x is GameCompletedEvent);
         numberOfRolls.Should().Be(expectedNumberOfRolls);
     }
@@ -64,7 +60,7 @@ public sealed class TenPinGameTests
         // Act
         while (!sut.IsComplete)
         {
-            TenPinRoll roll = TenPinRoll.Create(0, _eventRegister);
+            TenPinRoll roll = new(0);
             sut.AddRoll(roll);
             numberOfRolls++;
         }
@@ -81,14 +77,14 @@ public sealed class TenPinGameTests
         // Arrange
         while (!_sut.IsComplete)
         {
-            TenPinRoll roll = TenPinRoll.Create(0, _eventRegister);
+            TenPinRoll roll = new(0);
             _sut.AddRoll(roll);
         }
 
         // Act
         Action actual = () =>
         {
-            TenPinRoll roll = TenPinRoll.Create(0, _eventRegister);
+            TenPinRoll roll = new(0);
             _sut.AddRoll(roll);
         };
 

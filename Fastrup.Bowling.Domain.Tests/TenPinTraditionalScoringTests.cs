@@ -3,13 +3,14 @@
 public sealed class TenPinTraditionalScoringTests
 {
     private readonly EventRegister _eventRegister;
-    private readonly Player[] _players;
+    private readonly TenPinGame _game;
     private readonly TenPinTraditionalScore _sut;
 
     public TenPinTraditionalScoringTests()
     {
         _eventRegister = new EventRegister();
-        _players = new[] { Player.Create(new Id(Guid.NewGuid()), new UserName("Player"), _eventRegister) };
+        Player[] players = new[] { Player.Create(new Id(Guid.NewGuid()), new UserName("Player"), _eventRegister) };
+        _game = TenPinGame.Create(new Id(Guid.NewGuid()), players, _eventRegister);
         _sut = new TenPinTraditionalScore();
     }
 
@@ -18,10 +19,10 @@ public sealed class TenPinTraditionalScoringTests
     {
         // Arrange
         int expected = 0;
-        TenPinFrame frame = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), true, _eventRegister);
-        while (!frame.IsComplete)
+        while (!_eventRegister.DomainEvents.Any(x => x is FrameCompletedEvent))
         {
-            frame.AddRoll(TenPinRoll.Create(0, _eventRegister), _eventRegister);
+            TenPinRoll roll = new(0);
+            _game.AddRoll(roll);
         }
 
         AddFrameCompletedEvents();
@@ -37,11 +38,11 @@ public sealed class TenPinTraditionalScoringTests
     public void GivenAFrame_WhenScoringASpare_ThenScore10PlusBonusRollPoints()
     {
         // Arrange
-        int expected = 15;
-        TenPinFrame frame = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), true, _eventRegister);
-        while (!frame.IsComplete)
+        int expected = 25;
+        while (_eventRegister.DomainEvents.Where(x => x is FrameCompletedEvent).Count() < 2)
         {
-            frame.AddRoll(TenPinRoll.Create(5, _eventRegister), _eventRegister);
+            TenPinRoll roll = new(5);
+            _game.AddRoll(roll);
         }
 
         AddFrameCompletedEvents();
@@ -58,10 +59,10 @@ public sealed class TenPinTraditionalScoringTests
     {
         // Arrange
         int expected = 30;
-        TenPinFrame frame = TenPinFrame.Create(new Id(Guid.NewGuid()), new Id(Guid.NewGuid()), true, _eventRegister);
-        while (!frame.IsComplete)
+        while (_eventRegister.DomainEvents.Where(x => x is FrameCompletedEvent).Count() < 2)
         {
-            frame.AddRoll(TenPinRoll.Create(10, _eventRegister), _eventRegister);
+            TenPinRoll roll = new(10);
+            _game.AddRoll(roll);
         }
 
         AddFrameCompletedEvents();
@@ -78,17 +79,13 @@ public sealed class TenPinTraditionalScoringTests
     {
         // Arrange
         int expected = 0;
-        TenPinGame game = TenPinGame.Create(new Id(Guid.NewGuid()), _players, _eventRegister);
-        while (!game.IsComplete)
+        while (!_game.IsComplete)
         {
-            game.AddRoll(TenPinRoll.Create(0, _eventRegister));
+            TenPinRoll roll = new(0);
+            _game.AddRoll(roll);
         }
 
-        IEnumerable<FrameCompletedEvent> events = _eventRegister.DomainEvents.FindAll(x => x is FrameCompletedEvent).Cast<FrameCompletedEvent>();
-        foreach (FrameCompletedEvent frameCompletedEvent in events)
-        {
-            _sut.AddEvent(frameCompletedEvent);
-        }
+        AddFrameCompletedEvents();
 
         // Act
         int actual = _sut.Score;
@@ -102,17 +99,13 @@ public sealed class TenPinTraditionalScoringTests
     {
         // Arrange
         int expected = 300;
-        TenPinGame game = TenPinGame.Create(new Id(Guid.NewGuid()), _players, _eventRegister);
-        while (!game.IsComplete)
+        while (!_game.IsComplete)
         {
-            game.AddRoll(TenPinRoll.Create(10, _eventRegister));
+            TenPinRoll roll = new(10);
+            _game.AddRoll(roll);
         }
 
-        IEnumerable<FrameCompletedEvent> events = _eventRegister.DomainEvents.FindAll(x => x is FrameCompletedEvent).Cast<FrameCompletedEvent>();
-        foreach (FrameCompletedEvent frameCompletedEvent in events)
-        {
-            _sut.AddEvent(frameCompletedEvent);
-        }
+        AddFrameCompletedEvents();
 
         // Act
         int actual = _sut.Score;
