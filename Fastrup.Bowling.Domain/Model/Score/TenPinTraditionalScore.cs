@@ -1,34 +1,29 @@
-﻿using Fastrup.Bowling.Domain.Abstractions;
-using Fastrup.Bowling.Domain.Events;
-using System.Linq;
+﻿namespace Fastrup.Bowling.Domain.Model.Score;
 
-namespace Fastrup.Bowling.Domain.Model.Score
+public sealed class TenPinTraditionalScore : PinScore
 {
-    public sealed class TenPinTraditionalScore : PinScore
+    public override int Score
     {
-        public override int Score
+        get
         {
-            get
+            int score = 0;
+            FrameCompletedEvent[] events = FrameEvents.ToArray();
+            for (int index = 0; index < events.Length; index++)
             {
-                int score = 0;
-                FrameCompletedEvent[] events = FrameEvents.ToArray();
-                for (int index = 0; index < events.Length; index++)
+                FrameCompletedEvent frame = events[index];
+                if (frame.IsStrike || frame.IsSpare)
                 {
-                    FrameCompletedEvent frame = events[index];
-                    if (frame.IsStrike || frame.IsSpare)
-                    {
-                        score += events[index..].SelectMany(x => x.Rolls).Take(3).Sum();
-                    }
-                    else
-                    {
-                        score += frame.Rolls.Sum();
-                    }
+                    score += events[index..].SelectMany(x => x.Rolls).Take(3).Sum();
                 }
-
-                return score;
+                else
+                {
+                    score += frame.Rolls.Sum();
+                }
             }
-        }
 
-        public override void AddEvent(FrameCompletedEvent frameEvent) => FrameEvents.Add(frameEvent);
+            return score;
+        }
     }
+
+    public override void AddEvent(FrameCompletedEvent frameEvent) => FrameEvents.Add(frameEvent);
 }

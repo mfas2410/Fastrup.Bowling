@@ -1,27 +1,17 @@
-﻿using System;
+﻿namespace Fastrup.Bowling.Domain.Model;
 
-namespace Fastrup.Bowling.Domain.Model
+public sealed record Id
 {
-    public sealed record Id
+    private readonly Guid _value;
+
+    public Id(Guid? value)
     {
-        private readonly Guid _value;
-
-        public Id(Guid value) => Value = value;
-
-        public Guid Value
-        {
-            get
-            {
-                if (_value.Equals(Guid.Empty)) throw new ArgumentException($"{nameof(Id)} not initialized");
-                return _value;
-            }
-            init
-            {
-                if (value.Equals(Guid.Empty)) throw new ArgumentException($"{nameof(Id)} cannot be empty");
-                _value = value;
-            }
-        }
-
-        public override string ToString() => Value.ToString();
+        if (value is null) throw new ArgumentNullException(nameof(Id));
+        if (value.Equals(Guid.Empty)) throw new ArgumentException("Cannot be empty", nameof(Id));
+        _value = value.Value;
     }
+
+    public override string ToString() => _value.ToString();
+
+    public static implicit operator Guid(Id obj) => obj._value;
 }

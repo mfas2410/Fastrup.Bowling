@@ -1,20 +1,15 @@
-﻿using Fastrup.Bowling.Domain.Abstractions;
-using System.Collections.Generic;
-using System.Linq;
+﻿namespace Fastrup.Bowling.Domain.Events;
 
-namespace Fastrup.Bowling.Domain.Events
+public sealed class GameCreatedEvent : IEvent
 {
-    public sealed class GameCreatedEvent : IEvent
+    public GameCreatedEvent(PinGame game)
     {
-        public GameCreatedEvent(PinGame game)
-        {
-            Id = game.Id.ToString();
-            PlayerIds = game.PlayerIds.Select(x => x.ToString());
-            Type = game.GetType().Name;
-        }
-
-        public string Id { get; }
-        public IEnumerable<string> PlayerIds { get; }
-        public string Type { get; }
+        Id = game.Id.ToString();
+        PlayerIds = game.PlayerIds.Select(x => x.ToString());
+        Type = game.GetType().Name;
     }
+
+    public string Id { get; }
+    public IEnumerable<string> PlayerIds { get; }
+    public string Type { get; }
 }

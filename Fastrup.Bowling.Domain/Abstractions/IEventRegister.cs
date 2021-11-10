@@ -1,7 +1,6 @@
-﻿namespace Fastrup.Bowling.Domain.Abstractions
+﻿namespace Fastrup.Bowling.Domain.Abstractions;
+
+public interface IEventRegister
 {
-    public interface IEventRegister
-    {
-        void RegisterEvent(IEvent domainEvent);
-    }
+    void RegisterEvent(IEvent domainEvent);
 }

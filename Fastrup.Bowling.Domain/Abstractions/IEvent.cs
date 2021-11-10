@@ -1,4 +1,3 @@
-﻿namespace Fastrup.Bowling.Domain.Abstractions
-{
-    public interface IEvent { }
-}
+﻿namespace Fastrup.Bowling.Domain.Abstractions;
+
+public interface IEvent { }

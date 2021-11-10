@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Fastrup.Bowling.Domain.Exceptions;
 
-namespace Fastrup.Bowling.Domain.Exceptions
+public sealed class FrameException : Exception
 {
-    public sealed class FrameException : Exception
-    {
-        public FrameException(string message) : base(message) { }
-    }
+    public FrameException(string message) : base(message) { }
 }

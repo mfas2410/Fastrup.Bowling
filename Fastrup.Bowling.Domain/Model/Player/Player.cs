@@ -1,7 +1,4 @@
-﻿using Fastrup.Bowling.Domain.Abstractions;
-using Fastrup.Bowling.Domain.Events;
-
-namespace Fastrup.Bowling.Domain.Model.Player
+﻿namespace Fastrup.Bowling.Domain.Model.Player
 {
     public sealed record Player
     {
@@ -17,7 +14,7 @@ namespace Fastrup.Bowling.Domain.Model.Player
 
         public static Player Create(Id id, UserName userName, IEventRegister eventRegister)
         {
-            var player = new Player(id, userName);
+            Player player = new(id, userName);
             eventRegister.RegisterEvent(new PlayerCreatedEvent(player));
             return player;
         }

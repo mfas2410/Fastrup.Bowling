@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Fastrup.Bowling.Domain.Exceptions;
 
-namespace Fastrup.Bowling.Domain.Exceptions
+public sealed class GameException : Exception
 {
-    public sealed class GameException : Exception
-    {
-        public GameException(string message) : base(message) { }
-    }
+    public GameException(string message) : base(message) { }
 }
