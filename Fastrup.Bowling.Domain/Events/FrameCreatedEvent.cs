@@ -1,15 +1,8 @@
 ﻿namespace Fastrup.Bowling.Domain.Events;
 
-public sealed class FrameCreatedEvent : IEvent
+public sealed class FrameCreatedEvent(PinFrame frame) : IEvent
 {
-    public FrameCreatedEvent(PinFrame frame)
-    {
-        GameId = frame.PlayerId.ToString();
-        PlayerId = frame.PlayerId.ToString();
-        NumberOfRolls = frame.NumberOfRolls;
-    }
-
-    public string GameId { get; }
-    public string PlayerId { get; }
-    public int NumberOfRolls { get; }
+    public string GameId { get; } = frame.PlayerId.ToString();
+    public string PlayerId { get; } = frame.PlayerId.ToString();
+    public int NumberOfRolls { get; } = frame.NumberOfRolls;
 }

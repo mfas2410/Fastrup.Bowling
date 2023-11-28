@@ -6,8 +6,8 @@ public sealed record Id
 
     public Id(Guid? value)
     {
-        if (value is null) throw new ArgumentNullException(nameof(Id));
-        if (value.Equals(Guid.Empty)) throw new ArgumentException("Cannot be empty", nameof(Id));
+        ArgumentNullException.ThrowIfNull(value);
+        if (value.Equals(Guid.Empty)) throw new ArgumentException("Cannot be empty", nameof(value));
         _value = value.Value;
     }
 

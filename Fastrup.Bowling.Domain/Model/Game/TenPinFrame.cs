@@ -1,11 +1,8 @@
 ﻿namespace Fastrup.Bowling.Domain.Model.Game;
 
-public sealed class TenPinFrame : PinFrame
+public sealed class TenPinFrame(Id gameId, Id playerId, bool isLastFrame) : PinFrame(gameId, playerId)
 {
-    private readonly bool _isLastFrame;
     private int _numberOfBonusRolls;
-
-    public TenPinFrame(Id gameId, Id playerId, bool isLastFrame) : base(gameId, playerId) => _isLastFrame = isLastFrame;
 
     public override bool IsComplete { get; protected set; }
 
@@ -13,7 +10,7 @@ public sealed class TenPinFrame : PinFrame
 
     private bool NoMoreRollsAvailable => Rolls.Count == NumberOfRolls + _numberOfBonusRolls;
 
-    private bool NotLastFrameAndIsStrike => !_isLastFrame && IsStrike;
+    private bool NotLastFrameAndIsStrike => !isLastFrame && IsStrike;
 
     public override void AddRoll(PinRoll pinRoll)
     {
@@ -23,7 +20,7 @@ public sealed class TenPinFrame : PinFrame
 
         _rolls.Add(roll);
 
-        if (_isLastFrame && (IsStrike || IsSpare)) _numberOfBonusRolls = 1;
+        if (isLastFrame && (IsStrike || IsSpare)) _numberOfBonusRolls = 1;
         IsComplete = NotLastFrameAndIsStrike || NoMoreRollsAvailable;
     }
 }

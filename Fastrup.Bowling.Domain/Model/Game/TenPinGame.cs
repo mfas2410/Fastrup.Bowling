@@ -1,11 +1,9 @@
-﻿using Fastrup.Bowling.Domain.Abstractions;
-
 namespace Fastrup.Bowling.Domain.Model.Game;
 
 public sealed class TenPinGame : PinGame
 {
     private readonly IEventRegister _eventRegister;
-    private readonly List<PinFrame> _frames = new();
+    private readonly List<PinFrame> _frames = [];
     private readonly int _numberOfFrames = 10;
     private readonly Id[] _playerIds;
     private int _currentPlayer;

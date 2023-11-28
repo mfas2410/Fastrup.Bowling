@@ -1,13 +1,7 @@
 ﻿namespace Fastrup.Bowling.Domain.Events;
 
-public sealed class RollCreatedEvent : IEvent
+public sealed class RollCreatedEvent(PinRoll roll) : IEvent
 {
-    public RollCreatedEvent(PinRoll roll)
-    {
-        PinsInLane = roll.PinsInLane;
-        PinsKnockedOver = roll.PinsKnockedOver;
-    }
-
-    public int PinsInLane { get; }
-    public int PinsKnockedOver { get; }
+    public int PinsInLane { get; } = roll.PinsInLane;
+    public int PinsKnockedOver { get; } = roll.PinsKnockedOver;
 }

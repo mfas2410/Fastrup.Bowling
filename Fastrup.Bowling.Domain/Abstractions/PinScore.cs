@@ -1,8 +1,8 @@
-﻿namespace Fastrup.Bowling.Domain.Abstractions;
+namespace Fastrup.Bowling.Domain.Abstractions;
 
 public abstract class PinScore
 {
-    protected List<FrameCompletedEvent> FrameEvents = new();
+    protected readonly List<FrameCompletedEvent> FrameEvents = [];
 
     public abstract int Score { get; }
 

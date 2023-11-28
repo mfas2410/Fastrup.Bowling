@@ -1,9 +1,7 @@
 ﻿namespace Fastrup.Bowling.Domain.Model.Game;
 
-public sealed class TenPinRoll : PinRoll
+public sealed class TenPinRoll(int pinsKnockedOver) : PinRoll(pinsKnockedOver)
 {
-    public TenPinRoll(int pinsKnockedOver) : base(pinsKnockedOver) { }
-
     public override int PinsInLane => 10;
 
     protected override void ValidateRoll(int pinsKnockedOver)

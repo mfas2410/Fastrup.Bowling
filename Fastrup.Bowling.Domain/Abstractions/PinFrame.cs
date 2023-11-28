@@ -1,20 +1,14 @@
-﻿namespace Fastrup.Bowling.Domain.Abstractions;
+namespace Fastrup.Bowling.Domain.Abstractions;
 
-public abstract class PinFrame
+public abstract class PinFrame(Id gameId, Id playerId)
 {
-    protected List<PinRoll> _rolls = new();
-
-    protected PinFrame(Id gameId, Id playerId)
-    {
-        GameId = gameId;
-        PlayerId = playerId;
-    }
+    protected readonly List<PinRoll> _rolls = [];
 
     public IReadOnlyCollection<PinRoll> Rolls => _rolls;
 
-    public Id GameId { get; }
+    public Id GameId { get; } = gameId;
 
-    public Id PlayerId { get; }
+    public Id PlayerId { get; } = playerId;
 
     public bool IsSpare => Rolls.Count >= NumberOfRolls && Rolls.Take(NumberOfRolls).Sum(x => x.PinsKnockedOver) == Rolls.FirstOrDefault()?.PinsInLane;
 

@@ -1,4 +1,4 @@
-﻿namespace Fastrup.Bowling.Domain.Tests;
+namespace Fastrup.Bowling.Domain.Tests;
 
 public sealed class TenPinGameTests
 {
@@ -94,7 +94,7 @@ public sealed class TenPinGameTests
 
     private static IEnumerable<Player> CreatePlayers(int numberOfPlayers, IEventRegister eventRegister)
     {
-        List<Player> players = new();
+        List<Player> players = [];
         Enumerable.Range(1, numberOfPlayers).ToList().ForEach(number => players.Add(Player.Create(new Id(Guid.NewGuid()), new UserName($"Player {number}"), eventRegister)));
         return players;
     }

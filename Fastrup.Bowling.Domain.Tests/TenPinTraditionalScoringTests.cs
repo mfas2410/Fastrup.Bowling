@@ -1,4 +1,4 @@
-﻿namespace Fastrup.Bowling.Domain.Tests;
+namespace Fastrup.Bowling.Domain.Tests;
 
 public sealed class TenPinTraditionalScoringTests
 {
@@ -9,7 +9,7 @@ public sealed class TenPinTraditionalScoringTests
     public TenPinTraditionalScoringTests()
     {
         _eventRegister = new EventRegister();
-        Player[] players = new[] { Player.Create(new Id(Guid.NewGuid()), new UserName("Player"), _eventRegister) };
+        Player[] players = { Player.Create(new Id(Guid.NewGuid()), new UserName("Player"), _eventRegister) };
         _game = TenPinGame.Create(new Id(Guid.NewGuid()), players, _eventRegister);
         _sut = new TenPinTraditionalScore();
     }
@@ -39,7 +39,7 @@ public sealed class TenPinTraditionalScoringTests
     {
         // Arrange
         int expected = 25;
-        while (_eventRegister.DomainEvents.Where(x => x is FrameCompletedEvent).Count() < 2)
+        while (_eventRegister.DomainEvents.Count(x => x is FrameCompletedEvent) < 2)
         {
             TenPinRoll roll = new(5);
             _game.AddRoll(roll);
@@ -59,7 +59,7 @@ public sealed class TenPinTraditionalScoringTests
     {
         // Arrange
         int expected = 30;
-        while (_eventRegister.DomainEvents.Where(x => x is FrameCompletedEvent).Count() < 2)
+        while (_eventRegister.DomainEvents.Count(x => x is FrameCompletedEvent) < 2)
         {
             TenPinRoll roll = new(10);
             _game.AddRoll(roll);

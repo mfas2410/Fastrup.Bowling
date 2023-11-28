@@ -1,19 +1,10 @@
 ﻿namespace Fastrup.Bowling.Domain.Events;
 
-public sealed class FrameCompletedEvent : IEvent
+public sealed class FrameCompletedEvent(PinFrame frame) : IEvent
 {
-    public FrameCompletedEvent(PinFrame frame)
-    {
-        GameId = frame.PlayerId.ToString();
-        PlayerId = frame.PlayerId.ToString();
-        IsSpare = frame.IsSpare;
-        IsStrike = frame.IsStrike;
-        Rolls = frame.Rolls.Select(x => x.PinsKnockedOver);
-    }
-
-    public string GameId { get; }
-    public string PlayerId { get; }
-    public bool IsSpare { get; }
-    public bool IsStrike { get; }
-    public IEnumerable<int> Rolls { get; }
+    public string GameId { get; } = frame.PlayerId.ToString();
+    public string PlayerId { get; } = frame.PlayerId.ToString();
+    public bool IsSpare { get; } = frame.IsSpare;
+    public bool IsStrike { get; } = frame.IsStrike;
+    public IEnumerable<int> Rolls { get; } = frame.Rolls.Select(x => x.PinsKnockedOver);
 }
